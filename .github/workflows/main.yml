@@ -152,6 +152,9 @@ jobs:
           -B "${{ github.workspace }}/build/ci" \
           -DCMAKE_SYSTEM_VERSION="${{ env.CMAKE_SYSTEM_VERSION }}" \
           -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
+          -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/build/ci/install" \
+          -DPACKAGE_NAME="streamfx-${{ env.PACKAGE_NAME }}" \
+          -DPACKAGE_PREFIX="${{ github.workspace }}/build/package" \
           -Dlibobs_DIR="${{ github.workspace }}/build/obs/install" \
           -DQt${{ matrix.qt }}_DIR="${{ github.workspace }}/build/qt" \
           -DFFmpeg_DIR="${{ github.workspace }}/build/obsdeps" \
