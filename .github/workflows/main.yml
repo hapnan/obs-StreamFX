@@ -338,10 +338,11 @@ jobs:
         sudo hdiutil attach ./Packages.dmg
         pushd /Volumes/Packages*
         sudo installer -pkg ./Install\ Packages.pkg -target /
-    - name: "Packaging"
-      shell: cmd
+    - name: "Packaging (MacOS)"
+      if: startsWith( matrix.runner, 'macos' )
+      shell: bash
       run: |
-        "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /V10 ".\build\ci\installer.iss"
+        packagesbuild "${{ github.workspace }}/build/ci/installer.pkgproj"
     - name: "Artifacts"
       uses: actions/upload-artifact@v1
       with:
@@ -354,7 +355,7 @@ jobs:
       matrix:
         runner: [ "ubuntu-22.04" ]
         compiler: [ "GCC-12", "Clang-16" ]
-        qt: [ 5, 6 ]
+        qt: [ 6 ]
         CMAKE_GENERATOR: [ "Ninja Multi-Config" ]
         include:
           - runner: "ubuntu-22.04"
