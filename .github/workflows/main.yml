@@ -509,7 +509,7 @@ jobs:
       shell: bash
       run: |
         mkdir "${{ github.workspace }}/build/package"
-        cmake --build "${{ github.workspace }}/build/ci" --config RelWithDebInfo --target PACKAGE_7Z
+        cmake --build "${{ github.workspace }}/build/ci" --config RelWithDebInfo --target PACKAGE
     - name: "Artifacts"
       uses: actions/upload-artifact@v1
       with:
