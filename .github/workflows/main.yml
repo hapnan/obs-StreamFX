@@ -374,24 +374,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner: ["ubuntu-22.04", "ubuntu-20.04"]
-        compiler: ["GCC-12", "GCC-11", "Clang-16"]
-        qt: [5, 6]
+        runner: ["ubuntu-22.04"]
+        compiler: ["GCC-12", "Clang-16"]
+        qt: [6]
         CMAKE_GENERATOR: ["Ninja Multi-Config"]
-        exclude:
-          - runner: "ubuntu-22.04"
-            qt: 5
-          - runner: "ubuntu-22.04"
-            compiler: "GCC-11"
-          - runner: "ubuntu-20.04"
-            qt: 6
-          - runner: "ubuntu-20.04"
-            compiler: "GCC-12"
         include:
           - runner: "ubuntu-22.04"
             name: "Ubuntu 22.04"
-          - runner: "ubuntu-20.04"
-            name: "Ubuntu 20.04"
     runs-on: "${{ matrix.runner }}"
     name: "${{ matrix.name }} (${{ matrix.compiler }}, Qt${{ matrix.qt }})"
     env:
@@ -431,6 +420,7 @@ jobs:
 
             echo "CMAKE_C_COMPILER=gcc-${compiler[1]}" >> "$GITHUB_ENV"
             echo "CMAKE_CXX_COMPILER=g++-${compiler[1]}" >> "$GITHUB_ENV"
+            echo "CMAKE_LINKER=gold" >> "$GITHUB_ENV"
           elif [[ "${compiler[0]}" == "Clang" ]]; then
             curl -jLo /tmp/llvm.sh "https://apt.llvm.org/llvm.sh"
             chmod +x /tmp/llvm.sh
@@ -445,6 +435,7 @@ jobs:
 
             echo "CMAKE_C_COMPILER=clang-${compiler[1]}" >> "$GITHUB_ENV"
             echo "CMAKE_CXX_COMPILER=clang++-${compiler[1]}" >> "$GITHUB_ENV"
+            echo "CMAKE_LINKER=ld.lld-${compiler[1]}" >> "$GITHUB_ENV"
           else
             echo "Unknown Compiler"
             exit 1
@@ -453,13 +444,8 @@ jobs:
         id: qt
         shell: bash
         run: |
-          if [[ ${{ matrix.qt }} -eq 5 ]]; then
-            sudo apt-get -y install -V \
-              qtbase5-dev qtbase5-private-dev libqt5svg5-dev
-          elif [[ ${{ matrix.qt }} -eq 6 ]]; then
-            sudo apt-get -y install -V \
-              qt6-base-dev qt6-base-private-dev libqt6svg6-dev libgles2-mesa-dev libegl1-mesa-dev libgl1-mesa-dev
-          fi
+          sudo apt-get -y install -V \
+            qt6-base-dev qt6-base-private-dev libqt6svg6-dev libgles2-mesa-dev libegl1-mesa-dev libgl1-mesa-dev
       - name: "Dependency: Prebuilt OBS Studio Dependencies"
         id: obsdeps
         shell: bash
