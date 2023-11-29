@@ -348,14 +348,14 @@ jobs:
         env:
           CMAKE_BUILD_TYPE: "RelWithDebInfo"
         run: |
-          cmake --build "build/ci" --config RelWithDebInfo --target install
+          cmake --build "build/ci" --config RelWithDebInfo --target StreamFX
 
       - name: "Packaging"
         continue-on-error: true
         shell: bash
         run: |
           mkdir "${{ github.workspace }}/build/package"
-          cmake --build "${{ github.workspace }}/build/ci" --config RelWithDebInfo --target PACKAGE_7Z
+          cmake --build "${{ github.workspace }}/build/ci" --config RelWithDebInfo --target StreamFX
 
       - name: "Packaging (MacOS)"
         continue-on-error: true
