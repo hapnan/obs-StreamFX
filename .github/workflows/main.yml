@@ -36,12 +36,6 @@ jobs:
             CMAKE_SYSTEM_VERSION: "10.0.20348.0"
             CMAKE_GENERATOR: "Visual Studio 17 2022"
             CMAKE_GENERATOR_PLATFORM: "x64"
-          - compiler: "Clang"
-            package_name: "windows-clang"
-            CMAKE_SYSTEM_VERSION: "10.0.20348.0"
-            CMAKE_GENERATOR: "Visual Studio 17 2022"
-            CMAKE_GENERATOR_TOOLSET: "ClangCL"
-            CMAKE_GENERATOR_PLATFORM: "x64"
     runs-on: "${{ matrix.runner }}"
     name: "${{ matrix.name }} (${{ matrix.compiler }})"
     env:
